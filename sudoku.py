@@ -1,3 +1,6 @@
+import math
+
+
 class Sudoku:
     def __init__(self, board):
         self.board = board
@@ -11,30 +14,25 @@ class Sudoku:
     def solve(self):
         return self.board
 
+    def get_row(self, row):
+        return self.board[row]
+
+    def get_col(self, col):
+        return [row[col] for row in self.board]
+
     def get_block(self, row, col):
-        if row < 3:
-            if col < 3:
-                return [[self.board[j][i] for i in range(3)] for j in range(3)]
-            elif col < 6:
-                return [self.board[i][j] for i in range(3) for j in range(3, 6)]
-            else:
-                return [self.board[i][j] for i in range(3) for j in range(6, 9)]
-        elif row < 6:
-            if col < 3:
-                return [self.board[i][j] for i in range(3, 6) for j in range(3)]
-            elif col < 6:
-                return [self.board[i][j] for i in range(3, 6) for j in range(3, 6)]
-            else:
-                return [self.board[i][j] for i in range(3, 6) for j in range(6, 9)]
-        elif row < 9:
-            if col < 3:
-                return [self.board[i][j] for i in range(6, 9) for j in range(3)]
-            elif col < 6:
-                return [self.board[i][j] for i in range(6, 9) for j in range(3, 6)]
-            else:
-                return [self.board[i][j] for i in range(6, 9) for j in range(6, 9)]
-        else:
-            return None
+        row_range_min = math.floor(row / 3) * 3
+        row_range_max = math.ceil((row + 1) / 3) * 3
+        col_range_min = math.floor(col / 3) * 3
+        col_range_max = math.ceil((col + 1) / 3) * 3
+
+        return [
+            [
+                self.board[row_num][col_num]
+                for col_num in range(col_range_min, col_range_max)
+            ]
+            for row_num in range(row_range_min, row_range_max)
+        ]
 
     def __str__(self):
         return "\n".join(" ".join(str(cell) for cell in row) for row in self.board)
