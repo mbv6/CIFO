@@ -1,4 +1,5 @@
 import math
+from functools import reduce
 
 
 class Sudoku:
@@ -33,6 +34,13 @@ class Sudoku:
             ]
             for row_num in range(row_range_min, row_range_max)
         ]
+
+    def is_number_valid(self, row, col, value):
+        return self.board[row][col] == None and value not in self.get_row(
+            row
+        ) + self.get_col(col) + list(
+            reduce(lambda x, y: x + y, self.get_block(row, col), [])
+        )
 
     def __str__(self):
         return "\n".join(" ".join(str(cell) for cell in row) for row in self.board)
