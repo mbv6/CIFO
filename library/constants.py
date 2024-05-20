@@ -1,3 +1,4 @@
+# Initial values for the sudoku problem
 INITIAL_VALUES = [
     9,
     None,
@@ -82,6 +83,7 @@ INITIAL_VALUES = [
     None,
 ]
 
+# Solution for the INITIAL_VALUES problem
 INITIAL_VALUES_SOLUTION = [
     9,
     4,
