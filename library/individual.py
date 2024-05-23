@@ -66,7 +66,17 @@ class Individual:
         def row_to_str(row):
             return " ".join(value_to_str(value) for value in row)
 
-        return "\n".join(row_to_str(self.rows[row_index]) for row_index in range(9))
+        # Adding grid lines
+        lines = []
+        for row_index in range(9):
+            if row_index % 3 == 0 and row_index != 0:
+                lines.append("- - - - - - - - - - - -")
+            row = self.rows[row_index]
+            row_str = " ".join(value_to_str(value) for value in row)
+            row_with_bars = " | ".join([row_str[i:i+6] for i in range(0, len(row_str), 6)])
+            lines.append(row_with_bars)
+
+        return "\n".join(lines)
 
     def initial_setup_with_values(self, values: "list[str]"):
         """
