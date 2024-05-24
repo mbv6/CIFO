@@ -65,6 +65,7 @@ class Population:
         selection: object,
         xo: object,
         xo_prob: int,
+        mutation: object,
         mut_prob: int,
     ):
         """
@@ -75,6 +76,7 @@ class Population:
         selection (function): selection function to select individuals from current population to be parents for next generation
         xo (function): cross-over function to create offsprings with selected parents
         xo_prob (int): probability of performing cross-over with selected parents
+        mutation (function): mutation function to mutate offsprings
         mut_prob (int): probability of performing mutation on current offsprings
         """
         best = None
@@ -104,9 +106,9 @@ class Population:
                 offspring_1, offspring_2 = best_values[0][0], best_values[1][0]
 
                 if random() < mut_prob:
-                    offspring_1 = offspring_1.swap_mutation(6)
+                    offspring_1 = mutation(offspring_1, 5)
                 if random() < mut_prob:
-                    offspring_2 = offspring_2.swap_mutation(5)
+                    offspring_2 = mutation(offspring_2, 5)
 
                 new_population.append(offspring_1)
                 if len(new_population) < self.population_size:
