@@ -1,10 +1,10 @@
 from random import sample
-from library.population import Population
-from library.individual import Individual
-from classes.population import rank_population
+from classes.population import Population
+from classes.individual import Individual
+from library.population import rank_population
 
 
-def tournament_selection(population: Population, tournament_size=10) -> Individual:
+def tournament_selection(population: Population, tournament_size=50) -> Individual:
     """
     Select a certain number of random individuals from the population (without repetition) and select the best one according to its fitness.
 
