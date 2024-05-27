@@ -83,12 +83,13 @@ class Population:
         elitism_range (int): number of best individuals to keep from one generation to the next
         """
         top_individuals = []
-        top_generation_individuas = []
+        num_mutations = 1
         for generation in range(generations):
             new_population = [individual[0] for individual in top_individuals]
 
             while len(new_population) < self.population_size:
                 parent_1, parent_2 = selection(self), selection(self)
+                # check if parents aren't the same
                 while parent_1 == parent_2:
                     parent_1, parent_2 = selection(self), selection(self)
 
@@ -97,21 +98,23 @@ class Population:
                 else:
                     offspring_1, offspring_2 = deepcopy(parent_1), deepcopy(parent_2)
 
-                # current_individuals_list = [
-                #     parent_1,
-                #     parent_2,
-                #     offspring_1,
-                #     offspring_2,
-                # ]
-                # # get 2 with best fitness from both parents and offsprings
-                # best_values = rank_population(current_individuals_list)[:2]
+                current_individuals_list = [
+                    parent_1,
+                    parent_2,
+                    offspring_1,
+                    offspring_2,
+                ]
+                # get 2 with best fitness from both parents and offsprings
+                best_values = rank_population(current_individuals_list)[:2]
 
-                # offspring_1, offspring_2 = best_values[0][0], best_values[1][0]
+                offspring_1, offspring_2 = deepcopy(best_values[0][0]), deepcopy(
+                    best_values[1][0]
+                )
 
                 if random() < mut_prob:
-                    offspring_1 = mutation(offspring_1, 1)
+                    offspring_1 = mutation(offspring_1, num_mutations)
                 if random() < mut_prob:
-                    offspring_2 = mutation(offspring_2, 1)
+                    offspring_2 = mutation(offspring_2, num_mutations)
 
                 new_population.append(offspring_1)
                 if len(new_population) < self.population_size:
@@ -128,9 +131,9 @@ class Population:
                 )
             )[:elitism_range]
 
-            top_generation_individuas.append(top_individuals[0])
-
             self.individuals = new_population
+
+            best = top_individuals[0][1]
 
             print(
                 f"Best individual of gen #{generation + 1} (fitness = {new_population[0].fitness}): \n{new_population[0]}"
