@@ -1,3 +1,5 @@
+from operator import attrgetter
+
 from library.individual import Individual
 from random import random
 from classes.population import rank_population
@@ -60,14 +62,14 @@ class Population:
         print("Population created")
 
     def evolve(
-        self,
-        generations: int,
-        selection: object,
-        xo: object,
-        xo_prob: int,
-        mutation: object,
-        mut_prob: int,
-    ):
+            self,
+            generations: int,
+            selection: object,
+            xo: object,
+            xo_prob: int,
+            mut_prob: int,
+            elitism: bool = True,
+            elite_len=int):
         """
         Run Genetic Algorithm, selecting, crossing and mutating individuals in current generation to create the next one.
 
@@ -81,9 +83,18 @@ class Population:
         """
         best = None
         previous_best = (None, float("inf"))
+        rank_population(self)
+        if elitism:
+            self.individuals.sort(key=attrgetter('fitness'), reverse=True)
+            elites = []
+            for i in range(elite_len):
+                elites.append(self.individuals[i])
+            elite = copy(min(self.individuals, key=attrgetter('fitness')))
+
         for generation in range(generations):
             new_population = [best[0]] if best is not None else []
-
+            for i in range(len(self.individuals)):
+                self.individuals[i].get_fitness()
             while len(new_population) < self.population_size:
                 parent_1, parent_2 = selection(self), selection(self)
                 while parent_1 == parent_2:
@@ -92,27 +103,22 @@ class Population:
                 if random() < xo_prob:
                     offspring_1, offspring_2 = xo(parent_1, parent_2)
                 else:
-                    offspring_1, offspring_2 = parent_1, parent_2
-
-                current_individuals_list = [
-                    parent_1,
-                    parent_2,
-                    offspring_1,
-                    offspring_2,
-                ]
-                # get 2 with best fitness from both parents and offsprings
-                best_values = rank_population(current_individuals_list)[:2]
-
-                offspring_1, offspring_2 = best_values[0][0], best_values[1][0]
+                    offspring_1, offspring_2 = deepcopy(parent_1), deepcopy(parent_2)
 
                 if random() < mut_prob:
-                    offspring_1 = mutation(offspring_1, 5)
+                    offspring_1 = offspring_1.swap_mutation(6)
                 if random() < mut_prob:
-                    offspring_2 = mutation(offspring_2, 5)
+                    offspring_2 = offspring_2.swap_mutation(5)
 
                 new_population.append(offspring_1)
                 if len(new_population) < self.population_size:
                     new_population.append(offspring_2)
+            if elitism:
+                new_population = rank_population(new_population)
+                new_population.sort(key=attrgetter('fitness'), reverse=True)
+                for i in range(elite_len):
+                    new_population.pop(0)
+                new_population.append(elite)
 
             population_fitness = rank_population(new_population)
 
