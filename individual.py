@@ -207,6 +207,33 @@ class Individual:
 
         return self.fitness
 
+    def swap_mutation(self, num_mutations=1):
+        """
+        Perform a swap mutation in the board
+
+        Parameters:
+        num_mutations (int): number of mutations to perform
+
+        Returns:
+        Individual: self
+        """
+        for _ in range(num_mutations):
+            block_id = randint(0, 8)
+
+            random_pos_1, row_id_1, col_id_1 = self.get_random_position(block_id)
+            random_pos_2, row_id_2, col_id_2 = self.get_random_position(
+                block_id, disabled_positions=[random_pos_1]
+            )
+
+            selected_block = self.blocks[block_id]
+            val_1 = selected_block[random_pos_1]
+            val_2 = selected_block[random_pos_2]
+
+            self.set_value(row_id_1, col_id_1, block_id, val_2)
+            self.set_value(row_id_2, col_id_2, block_id, val_1)
+
+        return self
+
     def get_random_position(
         self, block_id: int, disabled_positions: "list[(int, int)]" = []
     ) -> "tuple[int, int, int]":

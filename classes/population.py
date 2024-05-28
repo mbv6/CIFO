@@ -1,4 +1,4 @@
-from library.individual import Individual
+from individual import Individual
 
 
 def rank_population(population: "list[Individual]"):

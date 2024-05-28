@@ -1,10 +1,12 @@
-from library.individual import Individual
-from library.constants import INITIAL_VALUES
+import random
+
+from individual import Individual
+from constants import INITIAL_VALUES
 from random import randint
 
 
 def single_point_xo(
-    parent1: Individual, parent2: Individual
+        parent1: Individual, parent2: Individual
 ) -> "tuple[Individual, Individual]":
     """
     Single point crossover between two individuals.
@@ -49,11 +51,30 @@ def two_point_xo(parent1: Individual, parent2: Individual) -> "tuple[Individual,
     return child1, child2
 
 
+def two_point_crossover(
+        parent1: Individual, parent2: Individual
+) -> "tuple[Individual, Individual]":
+    point1, point2 = sorted([random.randint(1, 8) for _ in range(2)])
+
+    child1_blocks = parent1.blocks[:point1] + parent2.blocks[point1:point2] + parent1.blocks[point2:]
+    child2_blocks = parent2.blocks[:point1] + parent1.blocks[point1:point2] + parent2.blocks[point2:]
+
+    child1 = Individual(blocks=child1_blocks)
+    child2 = Individual(blocks=child2_blocks)
+
+    return child1, child2
+
+
 if __name__ == "__main__":
     parent1 = Individual(values=INITIAL_VALUES)
-    parent2 = Individual(["." for _ in range(81)])
+    parent2 = Individual(values=['.' for _ in range(81)])
 
     child1, child2 = single_point_xo(parent1, parent2)
+    print(child1)
+    print("\n\n\n----------------\n\n\n")
+    print(child2)
+
+    child1, child2 = two_point_crossover(parent1, parent2)
     print(child1)
     print("\n\n\n----------------\n\n\n")
     print(child2)
