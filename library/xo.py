@@ -27,6 +27,27 @@ def single_point_xo(
 
     return child1, child2
 
+def two_point_xo(parent1: Individual, parent2: Individual) -> "tuple[Individual, Individual]":
+    """
+    Two point crossover between two individuals.
+
+    Parameters:
+    parent1 (Individual): first parent to crossover.
+    parent2 (Individual): second parent to crossover.
+
+    Returns:
+    tuple[Individual, Individual]: two children resulting from the crossover.
+    """
+    point1, point2 = sorted([randint(1, 8) for _ in range(2)])
+
+    child1_blocks = parent1.blocks[:point1] + parent2.blocks[point1:point2] + parent1.blocks[point2:]
+    child2_blocks = parent2.blocks[:point1] + parent1.blocks[point1:point2] + parent2.blocks[point2:]
+
+    child1 = Individual(blocks=child1_blocks).set_fixed(parent1.fixed)
+    child2 = Individual(blocks=child2_blocks).set_fixed(parent2.fixed)
+
+    return child1, child2
+
 
 if __name__ == "__main__":
     parent1 = Individual(values=INITIAL_VALUES)
