@@ -1,12 +1,10 @@
-import random
-
-from individual import Individual
-from constants import INITIAL_VALUES
+from classes.individual import Individual
+from library.constants import INITIAL_VALUES
 from random import randint
 
 
 def single_point_xo(
-        parent1: Individual, parent2: Individual
+    parent1: Individual, parent2: Individual
 ) -> "tuple[Individual, Individual]":
     """
     Single point crossover between two individuals.
@@ -29,9 +27,12 @@ def single_point_xo(
 
     return child1, child2
 
-def two_point_xo(parent1: Individual, parent2: Individual) -> "tuple[Individual, Individual]":
+
+def row_single_point_xo(
+    parent1: Individual, parent2: Individual
+) -> "tuple[Individual, Individual]":
     """
-    Two point crossover between two individuals.
+    Single point crossover between two individuals.
 
     Parameters:
     parent1 (Individual): first parent to crossover.
@@ -40,16 +41,16 @@ def two_point_xo(parent1: Individual, parent2: Individual) -> "tuple[Individual,
     Returns:
     tuple[Individual, Individual]: two children resulting from the crossover.
     """
-    point1, point2 = sorted([randint(1, 8) for _ in range(2)])
+    xo_point = randint(1, 8)
 
-    child1_blocks = parent1.blocks[:point1] + parent2.blocks[point1:point2] + parent1.blocks[point2:]
-    child2_blocks = parent2.blocks[:point1] + parent1.blocks[point1:point2] + parent2.blocks[point2:]
-
-    child1 = Individual(blocks=child1_blocks).set_fixed(parent1.fixed)
-    child2 = Individual(blocks=child2_blocks).set_fixed(parent2.fixed)
+    child1 = Individual(
+        rows=parent1.rows[:xo_point] + parent2.rows[xo_point:]
+    ).set_fixed(parent1.fixed)
+    child2 = Individual(
+        rows=parent2.rows[:xo_point] + parent1.rows[xo_point:]
+    ).set_fixed(parent2.fixed)
 
     return child1, child2
-
 
 def two_point_crossover(
         parent1: Individual, parent2: Individual
@@ -67,14 +68,9 @@ def two_point_crossover(
 
 if __name__ == "__main__":
     parent1 = Individual(values=INITIAL_VALUES)
-    parent2 = Individual(values=['.' for _ in range(81)])
+    parent2 = Individual(["." for _ in range(81)])
 
     child1, child2 = single_point_xo(parent1, parent2)
-    print(child1)
-    print("\n\n\n----------------\n\n\n")
-    print(child2)
-
-    child1, child2 = two_point_crossover(parent1, parent2)
     print(child1)
     print("\n\n\n----------------\n\n\n")
     print(child2)
