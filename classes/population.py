@@ -1,38 +1,7 @@
 from classes.individual import Individual
 from random import random
-from library.population import rank_population
+from library.population import rank_population, create_generation
 from copy import deepcopy
-
-
-def create_generation(population_size: int, **kwargs: dict) -> "list[Individual]":
-    """
-    Create a generation of individuals with random valid blocks
-
-    Parameters:
-    population_size (int): number of individuals in the population
-    kwargs[values] (list): list of 81 integers representing the board
-    kwargs[blocks] (list): list of 9 lists of 9 integers (blocks) representing the board
-
-    Raises:
-    ValueError: if neither 'values' nor 'blocks' are provided
-
-    Returns:
-    list[Individual]: list of individuals - the new generation
-    """
-    individuals = []
-    for _ in range(population_size):
-        if "values" in kwargs:
-            individual = Individual(
-                values=kwargs["values"]
-            ).random_fill_with_valid_rows()
-        elif "blocks" in kwargs:
-            individual = Individual(
-                blocks=kwargs["blocks"]
-            ).random_fill_with_valid_rows()
-        else:
-            raise ValueError("Either 'values' or 'blocks' must be provided")
-        individuals.append(individual)
-    return individuals
 
 
 class Population:
@@ -91,28 +60,16 @@ class Population:
         for generation in range(generations):
             new_population = [individual[0] for individual in top_individuals]
 
-            if no_improvement_counter >= 30:
-                new_population = create_generation(
-                    self.population_size,
-                    values=self.initial_values,
-                )
-                print(
-                    f"\n\n\n\n-----CREATED GENERATION {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
-                )
-            elif no_improvement_counter >= generations_without_improvement:
-                num_mutations += 1
-                mut_prob = min(mut_prob + 0.1, 1)
-                xo_prob = max(xo_prob - 0.1, 0)
-                print(
-                    f"\n\n\n\n-----INCREASED {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
-                )
-            else:
-                num_mutations = 1
-                mut_prob = default_mut_prob
-                xo_prob = default_xo_prob
-                print(
-                    f"\n\n\n\n-----RESET {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
-                )
+            new_population, num_mutations, mut_prob, xo_prob = self.check_improvement(
+                new_population,
+                no_improvement_counter,
+                generations_without_improvement,
+                default_mut_prob,
+                default_xo_prob,
+                num_mutations,
+                mut_prob,
+                xo_prob,
+            )
 
             while len(new_population) < self.population_size:
                 parent_1, parent_2 = selection(self), selection(self)
@@ -150,12 +107,7 @@ class Population:
             population_fitness = rank_population(new_population)
 
             top_individuals = rank_population(
-                list(
-                    map(
-                        lambda x: x[0],
-                        population_fitness[:elitism_range],
-                    )
-                )
+                [ind for ind, _ in population_fitness[:elitism_range]]
             )[:elitism_range]
 
             self.individuals = new_population
@@ -163,7 +115,6 @@ class Population:
             if top_individuals[0][0] == best:
                 no_improvement_counter += 1
             else:
-                print(f"\n\n\n\n-----INSIDE HERE-----\n\n\n\n")
                 no_improvement_counter = 0
 
             best = top_individuals[0][0]
@@ -175,6 +126,52 @@ class Population:
             if best.fitness == 0:
                 print("\n\n\nFOUND FINAL SOLUTION\n\n\n")
                 break
+
+    def check_improvement(
+        self,
+        new_population: "list[Individual]",
+        no_improvement_counter: int,
+        generations_without_improvement: int,
+        default_mut_prob: int,
+        default_xo_prob: int,
+        num_mutations: int,
+        mut_prob: int,
+        xo_prob: int,
+    ) -> "tuple[list[Individual], int, int, int]":
+        """
+        Check if there is an improvement in the population.
+
+        Parameters:
+        new_population (list[Individual]): population of current generation
+        no_improvement_counter (int): number of generations without improvement
+        generations_without_improvement (int): number of generations without improvement (from parameters)
+        default_mut_prob (int): default mutation probability (from parameters)
+        default_xo_prob (int): default cross-over probability (from parameters)
+        num_mutations (int): number of mutations
+        mut_prob (int): mutation probability
+        xo_prob (int): cross-over probability
+
+        Returns:
+        list[Individual]: new population
+        int: updated number of mutations
+        int: updated mutation probability
+        int: updated cross-over probability
+        """
+        if no_improvement_counter >= 30:
+            new_population = create_generation(
+                self.population_size,
+                values=self.initial_values,
+            )
+        elif no_improvement_counter >= generations_without_improvement:
+            num_mutations += 1
+            mut_prob = min(mut_prob + 0.1, 1)
+            xo_prob = max(xo_prob - 0.1, 0)
+        else:
+            num_mutations = 1
+            mut_prob = default_mut_prob
+            xo_prob = default_xo_prob
+
+        return new_population, num_mutations, mut_prob, xo_prob
 
     def __len__(self) -> int:
         """
