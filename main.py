@@ -5,7 +5,7 @@ if __name__ == "__main__":
     from library.constants import INITIAL_VALUES
     from library.mutation import swap_mutation, row_swap_mutation
 
-    pop = Population(INITIAL_VALUES, 5000)
+    pop = Population(INITIAL_VALUES, 2000)
 
     pop.evolve(
         generations=10000,

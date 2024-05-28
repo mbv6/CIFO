@@ -52,8 +52,8 @@ class Population:
         initial_values (list[string]): list of 81 integers representing board to be solved
         population_size (int): number of individuals in each generation
         """
+        self.initial_values = initial_values
         self.population_size = population_size
-
         self.individuals = create_generation(population_size, values=initial_values)
 
         print("Population created")
@@ -82,10 +82,37 @@ class Population:
         generations_without_improvement (int): number of generations without improvement
         elitism_range (int): number of best individuals to keep from one generation to the next
         """
+        default_mut_prob = mut_prob
+        default_xo_prob = xo_prob
+        best = None
         top_individuals = []
+        no_improvement_counter = 0
         num_mutations = 1
         for generation in range(generations):
             new_population = [individual[0] for individual in top_individuals]
+
+            if no_improvement_counter >= 30:
+                new_population = create_generation(
+                    self.population_size,
+                    values=self.initial_values,
+                )
+                print(
+                    f"\n\n\n\n-----CREATED GENERATION {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
+                )
+            elif no_improvement_counter >= generations_without_improvement:
+                num_mutations += 1
+                mut_prob = min(mut_prob + 0.1, 1)
+                xo_prob = max(xo_prob - 0.1, 0)
+                print(
+                    f"\n\n\n\n-----INCREASED {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
+                )
+            else:
+                num_mutations = 1
+                mut_prob = default_mut_prob
+                xo_prob = default_xo_prob
+                print(
+                    f"\n\n\n\n-----RESET {num_mutations}, {mut_prob}, {xo_prob}-----\n\n\n\n"
+                )
 
             while len(new_population) < self.population_size:
                 parent_1, parent_2 = selection(self), selection(self)
@@ -126,20 +153,27 @@ class Population:
                 list(
                     map(
                         lambda x: x[0],
-                        top_individuals + population_fitness[:elitism_range],
+                        population_fitness[:elitism_range],
                     )
                 )
             )[:elitism_range]
 
             self.individuals = new_population
 
-            best = top_individuals[0][1]
+            if top_individuals[0][0] == best:
+                no_improvement_counter += 1
+            else:
+                print(f"\n\n\n\n-----INSIDE HERE-----\n\n\n\n")
+                no_improvement_counter = 0
+
+            best = top_individuals[0][0]
 
             print(
-                f"Best individual of gen #{generation + 1} (fitness = {new_population[0].fitness}): \n{new_population[0]}"
+                f"Best individual of gen #{generation + 1} (fitness = {best.fitness}): \n{best}"
             )
 
-            if top_individuals[0][1] == 0:
+            if best.fitness == 0:
+                print("\n\n\nFOUND FINAL SOLUTION\n\n\n")
                 break
 
     def __len__(self) -> int:
