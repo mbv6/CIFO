@@ -66,7 +66,17 @@ class Individual:
         def row_to_str(row):
             return " ".join(value_to_str(value) for value in row)
 
-        return "\n".join(row_to_str(self.rows[row_index]) for row_index in range(9))
+        # Adding grid lines
+        lines = []
+        for row_index in range(9):
+            if row_index % 3 == 0 and row_index != 0:
+                lines.append("- - - - - - - - - - - -")
+            row = self.rows[row_index]
+            row_str = " ".join(value_to_str(value) for value in row)
+            row_with_bars = " | ".join([row_str[i:i+6] for i in range(0, len(row_str), 6)])
+            lines.append(row_with_bars)
+
+        return "\n".join(lines)
 
     def initial_setup_with_values(self, values: "list[str]"):
         """
@@ -196,33 +206,6 @@ class Individual:
             self.fitness += duplicate_count(col)
 
         return self.fitness
-
-    def swap_mutation(self, num_mutations=1):
-        """
-        Perform a swap mutation in the board
-
-        Parameters:
-        num_mutations (int): number of mutations to perform
-
-        Returns:
-        Individual: self
-        """
-        for _ in range(num_mutations):
-            block_id = randint(0, 8)
-
-            random_pos_1, row_id_1, col_id_1 = self.get_random_position(block_id)
-            random_pos_2, row_id_2, col_id_2 = self.get_random_position(
-                block_id, disabled_positions=[random_pos_1]
-            )
-
-            selected_block = self.blocks[block_id]
-            val_1 = selected_block[random_pos_1]
-            val_2 = selected_block[random_pos_2]
-
-            self.set_value(row_id_1, col_id_1, block_id, val_2)
-            self.set_value(row_id_2, col_id_2, block_id, val_1)
-
-        return self
 
     def get_random_position(
         self, block_id: int, disabled_positions: "list[(int, int)]" = []
