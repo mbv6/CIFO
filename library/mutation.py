@@ -60,13 +60,15 @@ def row_swap_mutation(individual: Individual, num_mutations=1):
     return individual
 
 
-def row_random_mutation(individual: Individual, placeholder=None) -> Individual:
+def row_random_mutation(
+    individual: Individual, placeholder_num_mutations=None
+) -> Individual:
     """
     Randomize a row in the board, except from the fixed values
 
     Parameters:
     individual (Individual): individual to be mutated
-    placeholder (Any): used to keep same template between all mutation functions
+    placeholder_num_mutations (Any): used to keep same template between all mutation functions
 
     Returns:
     Individual: Individual
@@ -83,6 +85,43 @@ def row_random_mutation(individual: Individual, placeholder=None) -> Individual:
 
     while None in new_row:
         new_value = available_values.pop(randint(0, len(available_values) - 1))
+        new_row[new_row.index(None)] = new_value
+
+    for col_id in range(9):
+        individual.set_value(
+            row_id, col_id, get_block_from_row_and_col(row_id, col_id), new_row[col_id]
+        )
+
+    return individual
+
+
+def row_inversion_mutation(
+    individual: Individual, placeholder_num_mutations=None
+) -> Individual:
+    """
+    Invert the order of all non-fixed values in a row
+
+    Parameters:
+    individual (Individual): individual to be mutated
+    placeholder_num_mutations (Any): used to keep same template between all mutation functions
+
+    Returns:
+    Individual: Individual
+    """
+    row_id = randint(0, 8)
+    new_row = [None for _ in range(9)]
+    available_values = []
+
+    for col_id in range(9):
+        if individual.is_position_fixed(row_id, col_id):
+            new_row[col_id] = individual.get_value(row_id, col_id)
+        else:
+            available_values.append(individual.get_value(row_id, col_id))
+
+    available_values.reverse()
+
+    while None in new_row:
+        new_value = available_values.pop(0)
         new_row[new_row.index(None)] = new_value
 
     for col_id in range(9):
