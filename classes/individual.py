@@ -1,8 +1,9 @@
-from library.constants import INITIAL_VALUES
+from library.constants import EASY_INITIAL_VALUES
 from random import randint
 from library.individual import (
     get_col_from_block_id_and_position,
     get_row_from_block_id_and_position,
+    get_block_from_row_and_col,
 )
 
 
@@ -284,7 +285,7 @@ class Individual:
 
         while not is_valid or (row_id, col_id) in disabled_positions:
             col_id = randint(0, 8)
-            block_id = (row_id // 3) * 3 + col_id // 3
+            block_id = get_block_from_row_and_col(row_id, col_id)
             is_valid = not self.is_position_fixed(row_id, col_id)
 
         return row_id, col_id, block_id
@@ -345,7 +346,7 @@ class Individual:
 
 
 if __name__ == "__main__":
-    board = Individual(values=INITIAL_VALUES)
+    board = Individual(values=EASY_INITIAL_VALUES)
 
     board2 = board.random_fill_with_valid_blocks()
 

@@ -1,8 +1,9 @@
 from random import randint
 from classes.individual import Individual
+from library.individual import get_block_from_row_and_col
 
 
-def swap_mutation(individual: Individual, num_mutations=1):
+def block_swap_mutation(individual: Individual, num_mutations=1):
     """
     Perform a swap mutation in the board
 
@@ -35,6 +36,7 @@ def row_swap_mutation(individual: Individual, num_mutations=1):
     Perform a swap mutation in the board
 
     Parameters:
+    individual (Individual): individual to be mutated
     num_mutations (int): number of mutations to perform
 
     Returns:
@@ -54,5 +56,38 @@ def row_swap_mutation(individual: Individual, num_mutations=1):
 
         individual.set_value(row_id, col_id_1, block_id_1, val_2)
         individual.set_value(row_id, col_id_2, block_id_2, val_1)
+
+    return individual
+
+
+def row_random_mutation(individual: Individual, placeholder=None) -> Individual:
+    """
+    Randomize a row in the board, except from the fixed values
+
+    Parameters:
+    individual (Individual): individual to be mutated
+    placeholder (Any): used to keep same template between all mutation functions
+
+    Returns:
+    Individual: Individual
+    """
+    row_id = randint(0, 8)
+    new_row = [None for _ in range(9)]
+    available_values = []
+
+    for col_id in range(9):
+        if individual.is_position_fixed(row_id, col_id):
+            new_row[col_id] = individual.get_value(row_id, col_id)
+        else:
+            available_values.append(individual.get_value(row_id, col_id))
+
+    while None in new_row:
+        new_value = available_values.pop(randint(0, len(available_values) - 1))
+        new_row[new_row.index(None)] = new_value
+
+    for col_id in range(9):
+        individual.set_value(
+            row_id, col_id, get_block_from_row_and_col(row_id, col_id), new_row[col_id]
+        )
 
     return individual
