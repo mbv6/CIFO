@@ -1,6 +1,6 @@
 from classes.individual import Individual
 from library.constants import INITIAL_VALUES
-from random import randint, sample
+from random import randint, sample, uniform
 
 
 def single_point_xo(
@@ -52,7 +52,7 @@ def row_single_point_xo(
 
     return child1, child2
 
-def two_point_crossover(
+def blocks_two_point_crossover(
         parent1: Individual, parent2: Individual
 ) -> "tuple[Individual, Individual]":
     point1, point2 = sorted([random.randint(1, 8) for _ in range(2)])
@@ -122,42 +122,59 @@ def cycle_xo(parent1, parent2):
 
     return child1, child2
 
-def pmx(p1: Individual, p2: Individual) -> "tuple[Individual, Individual]":
-    """Implementation of partially matched/mapped crossover.
+def rows_uniform_xo(p1: Individual, p2: Individual) -> Individual:
+    """Implementation of uniform crossover for Sudoku rows.
 
     Args:
         p1 (Individual): First parent for crossover.
         p2 (Individual): Second parent for crossover.
 
     Returns:
-        Individuals: Two offspring, resulting from the crossover.
+        Individual: Offspring, resulting from the crossover.
     """
-    xo_points = sample(range(9), 2)
-    xo_points.sort()
-    def pmx_offspring(row1, row2):
+    def uniform_crossover_row(row1, row2):
+        offspring_row1 = [None] * 9
+        offspring_row2 = [None] * 9
+        available_numbers1 = set(range(1, 10))  # Numbers 1 to 9
+        available_numbers2 = set(range(1, 10))  # Numbers 1 to 9
 
-        o = [None] * 9
-        # offspring2
-        o[xo_points[0]:xo_points[1]]  = row1[xo_points[0]:xo_points[1]]
-        z = set(row2[xo_points[0]:xo_points[1]]) - set(row1[xo_points[0]:xo_points[1]])
+        for i in range(9):
+            if uniform(0, 1) < 0.5: # Randomly choose which parent to take the number from
+                if row1[i] in available_numbers1:  # If the number is not already in the offspring 1
+                    offspring_row1[i] = row1[i]
+                    available_numbers1.remove(row1[i])
+                if row2[i] in available_numbers2:  # If the number is not already in the offspring 2
+                    offspring_row2[i] = row2[i]
+                    available_numbers2.remove(row2[i])
+            else:
+                if row2[i] in available_numbers1:  # If the number is not already in the offspring 1
+                    offspring_row1[i] = row2[i]
+                    available_numbers1.remove(row2[i])
+                if row1[i] in available_numbers2:  # If the number is not already in the offspring 2
+                    offspring_row2[i] = row1[i]
+                    available_numbers2.remove(row1[i])
 
-        # numbers that exist in the segment
-        for i in z:
-            temp = i
-            index = row2.index(row1[row2.index(temp)])
-            while o[index] is not None:
-                temp = index
-                index = row2.index(row1[temp])
-            o[index] = i
+        # Fill in the remaining slots with available numbers
+        for i in range(9):
+            if offspring_row1[i] is None:
+                offspring_row1[i] = available_numbers1.pop()
+            if offspring_row2[i] is None:
+                offspring_row2[i] = available_numbers2.pop()
 
-        # numbers that doesn't exist in the segment
-        while None in o:
-            index = o.index(None)
-            o[index] = row2[index]
-        return o
+        return offspring_row1, offspring_row2
 
-    o1, o2 = pmx_offspring(p1, p2), pmx_offspring(p2, p1)
-    return o1, o2
+    offspring_rows1 = []
+    offspring_rows2 = []
+
+    for i in range(9):
+        offspring_row1, offspring_row2 = uniform_crossover_row(p1.rows[i], p2.rows[i])
+        offspring_rows1.append(offspring_row1)
+        offspring_rows2.append(offspring_row2)
+
+    offspring1 = Individual(rows=offspring_rows1).set_fixed(p1.fixed)
+    offspring2 = Individual(rows=offspring_rows2).set_fixed(p2.fixed)
+
+    return offspring1, offspring2
 
 if __name__ == "__main__":
     parent1 = Individual(values=INITIAL_VALUES)
