@@ -1,3 +1,29 @@
+# Selection Results
+
+|    | Selection   |   overall_average_generations |
+|---:|:------------|------------------------------:|
+|  0 | bs          |                       592.1   |
+|  1 | fps         |                       738.733 |
+|  2 | ts          |                       888.011 |
+
+# Crossover Results
+
+|    | Crossover   |   overall_average_generations |
+|---:|:------------|------------------------------:|
+|  0 | rpmxo       |                       547.378 |
+|  1 | rspxo       |                       976.756 |
+|  2 | uxo         |                       707.538 |
+
+# Mutation Results
+
+|    | Mutation   |   overall_average_generations |
+|---:|:-----------|------------------------------:|
+|  0 | rim        |                       794.663 |
+|  1 | rrm        |                       775.1   |
+|  2 | rsm        |                       671.589 |
+
+# Combination Results
+
 | Selection   | Crossover   | Mutation   |   Average Generations |   Solved Puzzles |
 |:------------|:------------|:-----------|----------------------:|-----------------:|
 | bs          | rpmxo       | rim        |                 265   |                1 |
