@@ -2,6 +2,7 @@ from random import sample, random, uniform
 from classes.population import Population
 from classes.individual import Individual
 from library.population import rank_population
+import numpy as np
 
 
 def tournament_selection(
@@ -16,7 +17,7 @@ def tournament_selection(
     temperature_placeholder (Any): used to keep same template between all selection function
 
     Returns:
-    Individual: best ranked individual from selected ones
+    Individual: selected individual
     """
     # Select tournament_size individuals at random (no repetition)
     tournament = sample(population.individuals, tournament_size)
@@ -59,12 +60,9 @@ def fitness_proportionate_selection(
     return selected
 
 
-import numpy as np
-
-
 def boltzmann_selection(
     population: Population, tournament_size_placeholder=None, temperature=1
-):
+) -> Individual:
     """
     This selection method is based on entropy and importance sampling methods in Monte Carlo simulation.
     With the selection method, the algorithm can explore as many configurations as possible while exploiting better configurations, consequently helping to solve the premature convergence problem.

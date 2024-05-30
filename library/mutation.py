@@ -3,15 +3,16 @@ from classes.individual import Individual
 from library.individual import get_block_from_row_and_col
 
 
-def block_swap_mutation(individual: Individual, num_mutations=1):
+def block_swap_mutation(individual: Individual, num_mutations=1) -> Individual:
     """
     Perform a swap mutation in the board
 
     Parameters:
+    individual (Individual): individual to be mutated
     num_mutations (int): number of mutations to perform
 
     Returns:
-    Individual: Individual
+    Individual: mutated individual
     """
     for _ in range(num_mutations):
         block_id = randint(0, 8)
@@ -31,7 +32,7 @@ def block_swap_mutation(individual: Individual, num_mutations=1):
     return individual
 
 
-def row_swap_mutation(individual: Individual, num_mutations=1):
+def row_swap_mutation(individual: Individual, num_mutations=1) -> Individual:
     """
     Perform a swap mutation in the board
 
@@ -40,7 +41,7 @@ def row_swap_mutation(individual: Individual, num_mutations=1):
     num_mutations (int): number of mutations to perform
 
     Returns:
-    Individual: Individual
+    Individual: mutated individual
     """
     for _ in range(num_mutations):
         row_id = randint(0, 8)
@@ -71,7 +72,7 @@ def row_random_mutation(
     placeholder_num_mutations (Any): used to keep same template between all mutation functions
 
     Returns:
-    Individual: Individual
+    Individual: mutated individual
     """
     row_id = randint(0, 8)
     new_row = [None for _ in range(9)]
@@ -106,7 +107,7 @@ def row_inversion_mutation(
     placeholder_num_mutations (Any): used to keep same template between all mutation functions
 
     Returns:
-    Individual: Individual
+    Individual: mutated individual
     """
     row_id = randint(0, 8)
     new_row = [None for _ in range(9)]

@@ -10,11 +10,12 @@ class Population:
     Class representing generation (population) of Sudoku boards (Individual)
 
     Attributes:
+    initial_values (list[string]): list of 81 integers representing board to be solved
     population_size (int): number of individuals in each generation
     individuals (list[Individual]): list of all individuals in current generation
     """
 
-    def __init__(self, initial_values: list, population_size: int):
+    def __init__(self, initial_values: list, population_size: int) -> None:
         """
         Initialize the population.
 

@@ -20,13 +20,14 @@ class Individual:
     fitness (int): fitness of the board
     """
 
-    def __init__(self, **kwargs: dict):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Initialize the board with either values or blocks
 
         Parameters:
         values (list[string]): list of 81 integers representing the board
         blocks (list[list[string]]): list of 9 lists of 9 integers (blocks) representing the board
+        rows (list[list[string]]): list of 9 lists of 9 integers (rows) representing the board
 
         Raises:
         ValueError: If values or blocks are not provided
@@ -61,7 +62,7 @@ class Individual:
 
     def __str__(self) -> str:
         """
-        Returns a string representation of the board
+        The string representation of the board
 
         Returns:
         str: string representation of the board
@@ -70,7 +71,6 @@ class Individual:
         def value_to_str(value):
             return str(value) if value is not None else "."
 
-        # Adding grid lines
         lines = []
         for row_index in range(9):
             if row_index % 3 == 0 and row_index != 0:
@@ -84,7 +84,7 @@ class Individual:
 
         return "\n".join(lines)
 
-    def initial_setup_with_values(self, values: "list[str]"):
+    def initial_setup_with_values(self, values: "list[str]") -> "Individual":
         """
         Initialize the board given a list of 81 integers
 
@@ -111,7 +111,7 @@ class Individual:
 
         return self
 
-    def initial_setup_with_blocks(self, blocks: "list[list[str]]"):
+    def initial_setup_with_blocks(self, blocks: "list[list[str]]") -> "Individual":
         """
         Initialize the board given a list of 9 lists of 9 integers
 
@@ -141,7 +141,7 @@ class Individual:
 
         return self
 
-    def initial_setup_with_rows(self, rows: "list[list[str]]"):
+    def initial_setup_with_rows(self, rows: "list[list[str]]") -> "Individual":
         """
         Initialize the board given a list of 9 lists of 9 integers
 
@@ -166,7 +166,7 @@ class Individual:
 
         return self
 
-    def random_fill_with_valid_rows(self):
+    def random_fill_with_valid_rows(self) -> "Individual":
         """
         Fill the board with random values in the empty positions of each row
 
@@ -178,16 +178,14 @@ class Individual:
             for row_value_index in range(len(row_values)):
                 if row_values[row_value_index] is None:
                     col_index = row_value_index
-                    block_index = (
-                        row_index // 3
-                    ) * 3 + col_index // 3  # TODO: create function for this
+                    block_index = get_block_from_row_and_col(row_index, col_index)
                     value = missing_values[randint(0, len(missing_values) - 1)]
                     missing_values.remove(value)
                     self.set_value(row_index, col_index, block_index, value)
 
         return self
 
-    def random_fill_with_valid_blocks(self):
+    def random_fill_with_valid_blocks(self) -> "Individual":
         """
         Fill the board with random values in the empty positions of each block
 
@@ -223,7 +221,7 @@ class Individual:
         """
         return self.rows[row][col]
 
-    def set_value(self, row: int, col: int, block: int, value: int):
+    def set_value(self, row: int, col: int, block: int, value: int) -> None:
         """
         Set the value of a position in the board
 
@@ -242,7 +240,7 @@ class Individual:
         Calculate the fitness of the board.
 
         Currently the fitness is calculated by counting the number of duplicates in columns and blocks.
-        There is no need to check for duplicates in rows since we create "random" boards with already valid rows.
+        There is no need to check for duplicates in rows since when creating "random" boards, we assign already valid rows.
 
         Returns:
         int: fitness of the board
@@ -331,7 +329,7 @@ class Individual:
         """
         return (row_id, col_id) in self.fixed
 
-    def set_fixed(self, fixed: "dict[(int, int), int]"):
+    def set_fixed(self, fixed: "dict[(int, int), int]") -> "Individual":
         """
         Set the fixed positions of the board
 
@@ -343,11 +341,3 @@ class Individual:
         """
         self.fixed = fixed
         return self
-
-
-if __name__ == "__main__":
-    board = Individual(values=EASY_INITIAL_VALUES)
-
-    board2 = board.random_fill_with_valid_blocks()
-
-    print(board2)

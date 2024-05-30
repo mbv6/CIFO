@@ -25,9 +25,10 @@ def create_generation(population_size: int, **kwargs: dict) -> "list[Individual]
     population_size (int): number of individuals in the population
     kwargs[values] (list): list of 81 integers representing the board
     kwargs[blocks] (list): list of 9 lists of 9 integers (blocks) representing the board
+    kwargs[rows] (list): list of 9 lists of 9 integers (rows) representing the board
 
     Raises:
-    ValueError: if neither 'values' nor 'blocks' are provided
+    ValueError: if neither 'values', 'blocks' nor 'rows' are provided as parameters
 
     Returns:
     list[Individual]: list of individuals - the new generation
@@ -42,6 +43,8 @@ def create_generation(population_size: int, **kwargs: dict) -> "list[Individual]
             individual = Individual(
                 blocks=kwargs["blocks"]
             ).random_fill_with_valid_rows()
+        elif "rows" in kwargs:
+            individual = Individual(rows=kwargs["rows"]).random_fill_with_valid_rows()
         else:
             raise ValueError("Either 'values' or 'blocks' must be provided")
         individuals.append(individual)
