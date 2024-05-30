@@ -106,7 +106,7 @@ def combination_results() -> pd.DataFrame:
             ),  # Count of True values in solved
         )
         .reset_index()
-        .sort_values("generations_mean")
+        .sort_values(["solved_count", "generations_mean"], ascending=False)
     )
 
     grouped_df.columns = [
@@ -120,7 +120,11 @@ def combination_results() -> pd.DataFrame:
     return grouped_df
 
 
-def crossover_results():
+def specific_results(operation: str):
+    if operation not in ["Crossover", "Selection", "Mutation"]:
+        raise ValueError(
+            "Invalid operation, please use 'Crossover', 'Selection' or 'Mutation'"
+        )
     return (
         combination_results()
         .groupby("Crossover")
@@ -129,22 +133,4 @@ def crossover_results():
     )
 
 
-def selection_results():
-    return (
-        combination_results()
-        .groupby("Selection")
-        .agg(overall_average_generations=("Average Generations", "mean"))
-        .reset_index()
-    )
-
-
-def mutation_results():
-    return (
-        combination_results()
-        .groupby("Mutation")
-        .agg(overall_average_generations=("Average Generations", "mean"))
-        .reset_index()
-    )
-
-
-print(crossover_results().to_markdown(index=False))
+print(combination_results().to_markdown(index=False))
