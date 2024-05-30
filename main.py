@@ -24,7 +24,7 @@ from library.mutation import (
 import os
 
 
-def simplify_function_name(selection: object):
+def simplify_function_name(selection: object) -> str:
     name = selection.__name__
 
     if name == "tournament_selection":
@@ -78,7 +78,7 @@ COMBINATIONS_LEFT = [
     # [boltzmann_selection, row_uniform_xo, row_swap_mutation],
     # [boltzmann_selection, row_uniform_xo, row_random_mutation],
     # [tournament_selection, row_single_point_xo, row_inversion_mutation],
-    # [tournament_selection, row_partially_mapped_xo, row_inversion_mutation], // TODO: only 5 iterations
+    # [tournament_selection, row_partially_mapped_xo, row_inversion_mutation],
     # [tournament_selection, row_uniform_xo, row_inversion_mutation],
     # [fitness_proportionate_selection, row_single_point_xo, row_inversion_mutation],
     # [fitness_proportionate_selection, row_partially_mapped_xo, row_inversion_mutation],
