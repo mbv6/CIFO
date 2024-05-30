@@ -35,6 +35,33 @@ csv_folders_path = [
 ]
 
 
+def expand_function_name(name: str) -> str:
+    if name == "ts":
+        return "tournament_selection"
+    elif name == "fps":
+        return "fitness_proportionate_selection"
+    elif name == "bs":
+        return "boltzmann_selection"
+    elif name == "bspxo":
+        return "block_single_point_xo"
+    elif name == "rspxo":
+        return "row_single_point_xo"
+    elif name == "rpmxo":
+        return "row_partially_mapped_xo"
+    elif name == "uxo":
+        return "row_uniform_xo"
+    elif name == "bsm":
+        return "block_swap_mutation"
+    elif name == "rsm":
+        return "row_swap_mutation"
+    elif name == "rrm":
+        return "row_random_mutation"
+    elif name == "rim":
+        return "row_inversion_mutation"
+    else:
+        return "ERROR"
+
+
 def combination_results() -> pd.DataFrame:
     # List to hold data from each file
     df_main = pd.DataFrame()
@@ -56,9 +83,9 @@ def combination_results() -> pd.DataFrame:
                     df_folder,
                     pd.DataFrame(
                         {
-                            "crossover": crossover_method,
-                            "selection": selection_method,
-                            "mutation": mutation_method,
+                            "crossover": expand_function_name(crossover_method),
+                            "selection": expand_function_name(selection_method),
+                            "mutation": expand_function_name(mutation_method),
                             "generations": final_generation,
                             "solved": final_generation < 1000,
                         },
@@ -120,4 +147,4 @@ def mutation_results():
     )
 
 
-print(crossover_results().to_markdown())
+print(crossover_results().to_markdown(index=False))
