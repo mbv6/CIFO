@@ -350,16 +350,3 @@ HARD_INITIAL_VALUES = [
     2,
     None,
 ]
-
-
-if __name__ == "__main__":
-    print(
-        len(EASY_INITIAL_VALUES), len([i for i in EASY_INITIAL_VALUES if i is not None])
-    )
-    print(
-        len(MEDIUM_INITIAL_VALUES),
-        len([i for i in MEDIUM_INITIAL_VALUES if i is not None]),
-    )
-    print(
-        len(HARD_INITIAL_VALUES), len([i for i in HARD_INITIAL_VALUES if i is not None])
-    )
