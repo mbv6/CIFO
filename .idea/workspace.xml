@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31fd739b-0780-4a05-910e-13afdb5b4448" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/library/xo.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/xo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +44,7 @@
     "Python.selection.executor": "Debug",
     "Python.xo.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Raquel",
+    "git-widget-placeholder": "gui",
     "settings.editor.selected.configurable": "preferences.lookFeel"
   }
 }]]></component>
@@ -77,7 +76,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/library/xo.py</url>
-          <line>141</line>
+          <line>124</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
