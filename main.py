@@ -19,6 +19,7 @@ from library.mutation import (
     block_swap_mutation,
     row_swap_mutation,
     row_random_mutation,
+    row_inversion_mutation,
 )
 import os
 
@@ -46,6 +47,8 @@ def simplify_function_name(selection: object):
         return "rsm"
     elif name == "row_random_mutation":
         return "rrm"
+    elif name == "row_inversion_mutation":
+        return "rim"
     else:
         return "ERROR"
 
@@ -57,23 +60,32 @@ TOURNAMENT_SIZE = 10
 BOLTZMANN_TEMPERATURE = 50
 XO_PROB = 0.8
 XO = row_partially_mapped_xo
-MUTATION = row_swap_mutation
+MUTATION = row_inversion_mutation
 MUT_PROB = 0.1
 GENERATIONS_WITHOUT_IMPROVEMENT = 10
 GENERATIONS_BEFORE_RESET = 30
 ELITISM_RANGE = 10
 
 COMBINATIONS_LEFT = [
-    [tournament_selection, row_single_point_xo, row_swap_mutation],
-    [tournament_selection, row_single_point_xo, row_random_mutation],
-    [tournament_selection, row_partially_mapped_xo, row_random_mutation],
-    [tournament_selection, row_uniform_xo, row_swap_mutation],
-    [fitness_proportionate_selection, row_single_point_xo, row_swap_mutation],
-    [fitness_proportionate_selection, row_single_point_xo, row_random_mutation],
-    [fitness_proportionate_selection, row_uniform_xo, row_swap_mutation],
-    [fitness_proportionate_selection, row_uniform_xo, row_random_mutation],
-    [boltzmann_selection, row_uniform_xo, row_swap_mutation],
-    [boltzmann_selection, row_uniform_xo, row_random_mutation],
+    # [tournament_selection, row_single_point_xo, row_swap_mutation],
+    # [tournament_selection, row_single_point_xo, row_random_mutation],
+    # [tournament_selection, row_partially_mapped_xo, row_random_mutation],
+    # [tournament_selection, row_uniform_xo, row_swap_mutation],
+    # [fitness_proportionate_selection, row_single_point_xo, row_swap_mutation],
+    # [fitness_proportionate_selection, row_single_point_xo, row_random_mutation],
+    # [fitness_proportionate_selection, row_uniform_xo, row_swap_mutation],
+    # [fitness_proportionate_selection, row_uniform_xo, row_random_mutation],
+    # [boltzmann_selection, row_uniform_xo, row_swap_mutation],
+    # [boltzmann_selection, row_uniform_xo, row_random_mutation],
+    # [tournament_selection, row_single_point_xo, row_inversion_mutation],
+    # [tournament_selection, row_partially_mapped_xo, row_inversion_mutation], // TODO: only 5 iterations
+    # [tournament_selection, row_uniform_xo, row_inversion_mutation],
+    # [fitness_proportionate_selection, row_single_point_xo, row_inversion_mutation],
+    # [fitness_proportionate_selection, row_partially_mapped_xo, row_inversion_mutation],
+    # [fitness_proportionate_selection, row_uniform_xo, row_inversion_mutation],
+    # [boltzmann_selection, row_single_point_xo, row_inversion_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [boltzmann_selection, row_uniform_xo, row_inversion_mutation],
 ]
 
 
@@ -105,3 +117,19 @@ for sel, xo, mut in COMBINATIONS_LEFT:
             os.makedirs(FILE_PATH)
 
         df.to_csv(f"{FILE_PATH}/{i}.csv")
+
+# pop = Population(EASY_INITIAL_VALUES, POPULATION_SIZE)
+
+# df = pop.evolve(
+#     generations=GENERATIONS,
+#     selection=SELECTION,
+#     tournament_size=TOURNAMENT_SIZE,
+#     boltzmann_temperature=BOLTZMANN_TEMPERATURE,
+#     xo_prob=XO_PROB,
+#     xo=XO,
+#     mutation=MUTATION,
+#     mut_prob=MUT_PROB,
+#     generations_without_improvement=GENERATIONS_WITHOUT_IMPROVEMENT,
+#     generations_before_reset=GENERATIONS_BEFORE_RESET,
+#     elitism_range=ELITISM_RANGE,
+# )
