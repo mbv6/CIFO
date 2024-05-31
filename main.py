@@ -64,59 +64,68 @@ MUTATION = row_inversion_mutation
 MUT_PROB = 0.1
 GENERATIONS_WITHOUT_IMPROVEMENT = 10
 GENERATIONS_BEFORE_RESET = 30
-ELITISM_RANGE = 10
+ELITISM_RANGE = 0
 
 COMBINATIONS_LEFT = [
-    # [tournament_selection, row_single_point_xo, row_swap_mutation],
-    # [tournament_selection, row_single_point_xo, row_random_mutation],
-    # [tournament_selection, row_partially_mapped_xo, row_random_mutation],
-    # [tournament_selection, row_uniform_xo, row_swap_mutation],
-    # [fitness_proportionate_selection, row_single_point_xo, row_swap_mutation],
-    # [fitness_proportionate_selection, row_single_point_xo, row_random_mutation],
-    # [fitness_proportionate_selection, row_uniform_xo, row_swap_mutation],
-    # [fitness_proportionate_selection, row_uniform_xo, row_random_mutation],
-    # [boltzmann_selection, row_uniform_xo, row_swap_mutation],
-    # [boltzmann_selection, row_uniform_xo, row_random_mutation],
-    # [tournament_selection, row_single_point_xo, row_inversion_mutation],
-    # [tournament_selection, row_partially_mapped_xo, row_inversion_mutation],
-    # [tournament_selection, row_uniform_xo, row_inversion_mutation],
-    # [fitness_proportionate_selection, row_single_point_xo, row_inversion_mutation],
-    # [fitness_proportionate_selection, row_partially_mapped_xo, row_inversion_mutation],
-    # [fitness_proportionate_selection, row_uniform_xo, row_inversion_mutation],
-    # [boltzmann_selection, row_single_point_xo, row_inversion_mutation],
+    [tournament_selection, row_single_point_xo, row_swap_mutation],
+    [tournament_selection, row_single_point_xo, row_random_mutation],
+    [tournament_selection, row_single_point_xo, row_inversion_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_swap_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_random_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [tournament_selection, row_uniform_xo, row_swap_mutation],
+    [tournament_selection, row_uniform_xo, row_random_mutation],
+    [tournament_selection, row_uniform_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [boltzmann_selection, row_single_point_xo, row_swap_mutation],
+    [boltzmann_selection, row_single_point_xo, row_inversion_mutation],
+    [boltzmann_selection, row_single_point_xo, row_random_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_swap_mutation],
     [boltzmann_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_random_mutation],
     [boltzmann_selection, row_uniform_xo, row_inversion_mutation],
+    [boltzmann_selection, row_uniform_xo, row_swap_mutation],
+    [boltzmann_selection, row_uniform_xo, row_random_mutation],
 ]
 
+for sel in [tournament_selection, fitness_proportionate_selection, boltzmann_selection]:
+    for xo in [row_single_point_xo, row_partially_mapped_xo, row_uniform_xo]:
+        for mut in [row_swap_mutation, row_random_mutation, row_inversion_mutation]:
+            SELECTION = sel
+            XO = xo
+            MUTATION = mut
 
-for sel, xo, mut in COMBINATIONS_LEFT:
-    SELECTION = sel
-    XO = xo
-    MUTATION = mut
+            FILE_PATH = f"results_no_elitism/{POPULATION_SIZE}_{GENERATIONS}_{simplify_function_name(SELECTION)}_{TOURNAMENT_SIZE}_{BOLTZMANN_TEMPERATURE}_{int(XO_PROB*10)}_{simplify_function_name(XO)}_{simplify_function_name(MUTATION)}_{int(MUT_PROB*10)}_{GENERATIONS_WITHOUT_IMPROVEMENT}_{GENERATIONS_BEFORE_RESET}_{ELITISM_RANGE}"
 
-    FILE_PATH = f"results/{POPULATION_SIZE}_{GENERATIONS}_{simplify_function_name(SELECTION)}_{TOURNAMENT_SIZE}_{BOLTZMANN_TEMPERATURE}_{int(XO_PROB*10)}_{simplify_function_name(XO)}_{simplify_function_name(MUTATION)}_{int(MUT_PROB*10)}_{GENERATIONS_WITHOUT_IMPROVEMENT}_{GENERATIONS_BEFORE_RESET}_{ELITISM_RANGE}"
+            for i in range(10):
+                pop = Population(EASY_INITIAL_VALUES, POPULATION_SIZE)
 
-    for i in range(10):
-        pop = Population(EASY_INITIAL_VALUES, POPULATION_SIZE)
+                df = pop.evolve(
+                    generations=GENERATIONS,
+                    selection=SELECTION,
+                    tournament_size=TOURNAMENT_SIZE,
+                    boltzmann_temperature=BOLTZMANN_TEMPERATURE,
+                    xo_prob=XO_PROB,
+                    xo=XO,
+                    mutation=MUTATION,
+                    mut_prob=MUT_PROB,
+                    generations_without_improvement=GENERATIONS_WITHOUT_IMPROVEMENT,
+                    generations_before_reset=GENERATIONS_BEFORE_RESET,
+                    elitism_range=ELITISM_RANGE,
+                )
 
-        df = pop.evolve(
-            generations=GENERATIONS,
-            selection=SELECTION,
-            tournament_size=TOURNAMENT_SIZE,
-            boltzmann_temperature=BOLTZMANN_TEMPERATURE,
-            xo_prob=XO_PROB,
-            xo=XO,
-            mutation=MUTATION,
-            mut_prob=MUT_PROB,
-            generations_without_improvement=GENERATIONS_WITHOUT_IMPROVEMENT,
-            generations_before_reset=GENERATIONS_BEFORE_RESET,
-            elitism_range=ELITISM_RANGE,
-        )
+                if not os.path.exists(FILE_PATH):
+                    os.makedirs(FILE_PATH)
 
-        if not os.path.exists(FILE_PATH):
-            os.makedirs(FILE_PATH)
-
-        df.to_csv(f"{FILE_PATH}/{i}.csv")
+                df.to_csv(f"{FILE_PATH}/{i}.csv")
 
 # pop = Population(EASY_INITIAL_VALUES, POPULATION_SIZE)
 
