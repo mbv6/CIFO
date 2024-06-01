@@ -1,3 +1,61 @@
+# Without Elistism 
+# Selection Results 
+
+| Selection                       |   overall_average_generations |
+|:--------------------------------|------------------------------:|
+| boltzmann_selection             |                       816.022 |
+| fitness_proportionate_selection |                       837.388 |
+| tournament_selection            |                       966.666 |
+
+# Crossover Results
+
+| Crossover               |   overall_average_generations |
+|:------------------------|------------------------------:|
+| row_partially_mapped_xo |                      854.1888 |
+| row_single_point_xo     |                      980.9444 |
+| row_uniform_xo          |                      784.9444 |
+
+# Mutation Results
+
+| Mutation               |   overall_average_generations |
+|:-----------------------|------------------------------:|
+| row_inversion_mutation |                       906.044 |
+| row_random_mutation    |                       870.488 |
+| row_swap_mutation      |                       843.544 |
+
+
+# Combination Results
+| Selection                       | Crossover               | Mutation               |   Average Generations |   Solved Puzzles |
+|:--------------------------------|:------------------------|:-----------------------|----------------------:|-----------------:|
+| boltzmann_selection             | row_uniform_xo          | row_random_mutation    |                 578.1 |                6 |
+| fitness_proportionate_selection | row_uniform_xo          | row_random_mutation    |                 672   |                5 |
+| boltzmann_selection             | row_uniform_xo          | row_swap_mutation      |                 526.1 |                5 |
+| fitness_proportionate_selection | row_uniform_xo          | row_inversion_mutation |                 713.9 |                4 |
+| fitness_proportionate_selection | row_partially_mapped_xo | row_inversion_mutation |                 630.1 |                4 |
+| boltzmann_selection             | row_partially_mapped_xo | row_swap_mutation      |                 616.8 |                4 |
+| fitness_proportionate_selection | row_partially_mapped_xo | row_random_mutation    |                 788.2 |                3 |
+| fitness_proportionate_selection | row_uniform_xo          | row_swap_mutation      |                 810.7 |                2 |
+| tournament_selection            | row_uniform_xo          | row_random_mutation    |                 956.2 |                1 |
+| tournament_selection            | row_partially_mapped_xo | row_random_mutation    |                 934   |                1 |
+| fitness_proportionate_selection | row_single_point_xo     | row_swap_mutation      |                 921.6 |                1 |
+| tournament_selection            | row_partially_mapped_xo | row_swap_mutation      |                 907.1 |                1 |
+| boltzmann_selection             | row_single_point_xo     | row_swap_mutation      |                 906.9 |                1 |
+| boltzmann_selection             | row_partially_mapped_xo | row_random_mutation    |                 905.9 |                1 |
+| boltzmann_selection             | row_partially_mapped_xo | row_inversion_mutation |                 905.6 |                1 |
+| boltzmann_selection             | row_uniform_xo          | row_inversion_mutation |                 904.8 |                1 |
+| tournament_selection            | row_uniform_xo          | row_swap_mutation      |                 902.7 |                1 |
+| boltzmann_selection             | row_single_point_xo     | row_inversion_mutation |                1000   |                0 |
+| boltzmann_selection             | row_single_point_xo     | row_random_mutation    |                1000   |                0 |
+| fitness_proportionate_selection | row_partially_mapped_xo | row_swap_mutation      |                1000   |                0 |
+| fitness_proportionate_selection | row_single_point_xo     | row_inversion_mutation |                1000   |                0 |
+| fitness_proportionate_selection | row_single_point_xo     | row_random_mutation    |                1000   |                0 |
+| tournament_selection            | row_partially_mapped_xo | row_inversion_mutation |                1000   |                0 |
+| tournament_selection            | row_single_point_xo     | row_inversion_mutation |                1000   |                0 |
+| tournament_selection            | row_single_point_xo     | row_random_mutation    |                1000   |                0 |
+| tournament_selection            | row_single_point_xo     | row_swap_mutation      |                1000   |                0 |
+| tournament_selection            | row_uniform_xo          | row_inversion_mutation |                1000   |                0 |
+
+# With Elitism
 # Selection Results
 
 | Selection                       |   overall_average_generations |
