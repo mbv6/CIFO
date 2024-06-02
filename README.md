@@ -1,5 +1,8 @@
-# Without Elistism 
-# Selection Results 
+# Objective
+The project explores Genetic Algorithms (GAs) to develop a solution for Sudoku puzzles. The goal is to define a fitness function and various GA techniques to find the most effective combination for solving Sudoku puzzles.
+
+## Without Elistism 
+## Selection Results 
 
 | Selection                       |   overall_average_generations |
 |:--------------------------------|------------------------------:|
@@ -15,7 +18,7 @@
 | row_single_point_xo     |                      980.9444 |
 | row_uniform_xo          |                      784.9444 |
 
-# Mutation Results
+## Mutation Results
 
 | Mutation               |   overall_average_generations |
 |:-----------------------|------------------------------:|
@@ -24,7 +27,7 @@
 | row_swap_mutation      |                       843.544 |
 
 
-# Combination Results
+## Combination Results
 | Selection                       | Crossover               | Mutation               |   Average Generations |   Solved Puzzles |
 |:--------------------------------|:------------------------|:-----------------------|----------------------:|-----------------:|
 | boltzmann_selection             | row_uniform_xo          | row_random_mutation    |                 578.1 |                6 |
@@ -55,8 +58,8 @@
 | tournament_selection            | row_single_point_xo     | row_swap_mutation      |                1000   |                0 |
 | tournament_selection            | row_uniform_xo          | row_inversion_mutation |                1000   |                0 |
 
-# With Elitism
-# Selection Results
+## With Elitism
+## Selection Results
 
 | Selection                       |   overall_average_generations |
 |:--------------------------------|------------------------------:|
@@ -64,7 +67,7 @@
 | fitness_proportionate_selection |                       738.733 |
 | tournament_selection            |                       888.011 |
 
-# Crossover Results
+## Crossover Results
 
 | Crossover               |   overall_average_generations |
 |:------------------------|------------------------------:|
@@ -72,7 +75,7 @@
 | row_single_point_xo     |                       976.756 |
 | row_uniform_xo          |                       704.667 |
 
-# Mutation Results
+## Mutation Results
 
 | Mutation               |   overall_average_generations |
 |:-----------------------|------------------------------:|
@@ -80,7 +83,7 @@
 | row_random_mutation    |                       775.1   |
 | row_swap_mutation      |                       671.589 |
 
-# Combination Results
+## Combination Results
 
 | Selection                       | Crossover               | Mutation               |   Average Generations |   Solved Puzzles |
 |:--------------------------------|:------------------------|:-----------------------|----------------------:|-----------------:|
