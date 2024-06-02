@@ -3,7 +3,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import glob
 
-# Directory containing the CSV files
 csv_folders_path = [
     "results/200_1000_bs_10_50_8_rpmxo_rrm_1_10_30_10/*.csv",
     "results/200_1000_bs_10_50_8_rpmxo_rsm_1_10_30_10/*.csv",
@@ -63,7 +62,6 @@ def expand_function_name(name: str) -> str:
 
 
 def combination_results() -> pd.DataFrame:
-    # List to hold data from each file
     df_main = pd.DataFrame()
 
     for csv_folder in csv_folders_path:
@@ -133,4 +131,7 @@ def specific_results(operation: str):
     )
 
 
+# print(specific_results("Crossover").to_markdown(index=False))
+# print(specific_results("Selection").to_markdown(index=False))
+# print(specific_results("Mutation").to_markdown(index=False))
 print(combination_results().to_markdown(index=False))
