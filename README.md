@@ -1,4 +1,6 @@
-# Objective
+# Group: Optimus Prime
+
+## Objective
 The project explores Genetic Algorithms (GAs) to develop a solution for Sudoku puzzles. The goal is to define a fitness function and various GA techniques to find the most effective combination for solving Sudoku puzzles.
 
 
