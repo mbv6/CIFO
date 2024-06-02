@@ -1,6 +1,7 @@
 # Objective
 The project explores Genetic Algorithms (GAs) to develop a solution for Sudoku puzzles. The goal is to define a fitness function and various GA techniques to find the most effective combination for solving Sudoku puzzles.
 
+
 ## Without Elistism 
 ## Selection Results 
 
@@ -10,7 +11,7 @@ The project explores Genetic Algorithms (GAs) to develop a solution for Sudoku p
 | fitness_proportionate_selection |                       837.388 |
 | tournament_selection            |                       966.666 |
 
-# Crossover Results
+## Crossover Results
 
 | Crossover               |   overall_average_generations |
 |:------------------------|------------------------------:|
