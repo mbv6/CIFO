@@ -3,7 +3,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import glob
 
-# Directory containing the CSV files
 csv_files_path = [
     "results/200_1000_bs_10_50_8_rpmxo_rrm_1_10_30_10/*.csv",
     "results/200_1000_bs_10_50_8_rpmxo_rsm_1_10_30_10/*.csv",
@@ -34,7 +33,6 @@ csv_files_path = [
     "results/200_1000_ts_10_50_8_uxo_rim_1_10_30_10/*.csv",
 ]
 
-# List to hold data from each file
 data_list = []
 
 for csv_file in csv_files_path:
@@ -69,12 +67,3 @@ plt.xlabel("Crossover Method")
 plt.ylabel("Number of Generations to Reach Solution")
 plt.legend(title="Selection Method")
 plt.show()
-
-# # Optional: Adding another dimension with mutation method using FacetGrid
-# g = sns.FacetGrid(df, col="mutation", height=6, aspect=1)
-# g.map(
-#     sns.boxplot, "crossover", "generations", "selection", order=df["crossover"].unique()
-# )
-# g.add_legend()
-
-# plt.show()

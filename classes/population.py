@@ -118,18 +118,22 @@ class Population:
 
             population_fitness = rank_population(new_population)
 
-            top_individuals = rank_population(
-                [ind for ind, _ in population_fitness[:elitism_range]]
-            )[:elitism_range]
+            if elitism_range > 0:
+                top_individuals = rank_population(
+                    [ind for ind, _ in population_fitness[:elitism_range]]
+                )[:elitism_range]
 
-            self.individuals = new_population
+                self.individuals = new_population
 
-            if top_individuals[0][0] == best:
-                no_improvement_counter += 1
+                if top_individuals[0][0] == best:
+                    no_improvement_counter += 1
+                else:
+                    no_improvement_counter = 0
+
+                best = top_individuals[0][0]
             else:
-                no_improvement_counter = 0
-
-            best = top_individuals[0][0]
+                self.individuals = new_population
+                best = population_fitness[0][0]
 
             data.append([generation + 1, best.fitness])
 

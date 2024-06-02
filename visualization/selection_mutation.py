@@ -3,7 +3,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import glob
 
-# Directory containing the CSV files
 csv_files_path = [
     "results/200_1000_bs_10_50_8_rpmxo_rrm_1_10_30_10/*.csv",
     "results/200_1000_bs_10_50_8_rpmxo_rsm_1_10_30_10/*.csv",
@@ -34,7 +33,6 @@ csv_files_path = [
     "results/200_1000_ts_10_50_8_uxo_rim_1_10_30_10/*.csv",
 ]
 
-# List to hold data from each file
 data_list = []
 
 for csv_file in csv_files_path:

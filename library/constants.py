@@ -1,3 +1,19 @@
+from library.selection import (
+    tournament_selection,
+    fitness_proportionate_selection,
+    boltzmann_selection,
+)
+from library.xo import (
+    row_single_point_xo,
+    row_partially_mapped_xo,
+    row_uniform_xo,
+)
+from library.mutation import (
+    row_swap_mutation,
+    row_random_mutation,
+    row_inversion_mutation,
+)
+
 # Initial values for the easy sudoku problem (81% of people can solve it)
 EASY_INITIAL_VALUES = [
     9,
@@ -349,4 +365,35 @@ HARD_INITIAL_VALUES = [
     None,
     2,
     None,
+]
+
+
+COMBINATIONS = [
+    [tournament_selection, row_single_point_xo, row_swap_mutation],
+    [tournament_selection, row_single_point_xo, row_random_mutation],
+    [tournament_selection, row_single_point_xo, row_inversion_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_swap_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_random_mutation],
+    [tournament_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [tournament_selection, row_uniform_xo, row_swap_mutation],
+    [tournament_selection, row_uniform_xo, row_random_mutation],
+    [tournament_selection, row_uniform_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_single_point_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_uniform_xo, row_inversion_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_swap_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_random_mutation],
+    [fitness_proportionate_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [boltzmann_selection, row_single_point_xo, row_swap_mutation],
+    [boltzmann_selection, row_single_point_xo, row_inversion_mutation],
+    [boltzmann_selection, row_single_point_xo, row_random_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_swap_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_inversion_mutation],
+    [boltzmann_selection, row_partially_mapped_xo, row_random_mutation],
+    [boltzmann_selection, row_uniform_xo, row_inversion_mutation],
+    [boltzmann_selection, row_uniform_xo, row_swap_mutation],
+    [boltzmann_selection, row_uniform_xo, row_random_mutation],
 ]

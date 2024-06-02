@@ -118,30 +118,22 @@ def row_uniform_xo(p1: Individual, p2: Individual) -> "tuple[Individual, Individ
     def uniform_single(row1, row2):
         child1_row = [None] * 9
         child2_row = [None] * 9
-        available_numbers1 = [i for i in range(1, 10)]  # Numbers 1 to 9
-        available_numbers2 = [i for i in range(1, 10)]  # Numbers 1 to 9
+        available_numbers1 = [i for i in range(1, 10)]
+        available_numbers2 = [i for i in range(1, 10)]
 
         for i in range(9):
-            if random() < 0.5:  # Randomly choose which parent to take the number from
-                if (
-                    row1[i] in available_numbers1
-                ):  # If the number is not already in the child 1
+            if random() < 0.5:
+                if row1[i] in available_numbers1:
                     child1_row[i] = row1[i]
                     available_numbers1.remove(row1[i])
-                if (
-                    row2[i] in available_numbers2
-                ):  # If the number is not already in the child 2
+                if row2[i] in available_numbers2:
                     child2_row[i] = row2[i]
                     available_numbers2.remove(row2[i])
             else:
-                if (
-                    row2[i] in available_numbers1
-                ):  # If the number is not already in the child 1
+                if row2[i] in available_numbers1:
                     child1_row[i] = row2[i]
                     available_numbers1.remove(row2[i])
-                if (
-                    row1[i] in available_numbers2
-                ):  # If the number is not already in the child 2
+                if row1[i] in available_numbers2:
                     child2_row[i] = row1[i]
                     available_numbers2.remove(row1[i])
 
